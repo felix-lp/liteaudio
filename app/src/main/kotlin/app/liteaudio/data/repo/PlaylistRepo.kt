@@ -81,7 +81,7 @@ class PlaylistRepo(
                                     title = meta.title,
                                     uploader = meta.uploader,
                                     thumbnailUrl = meta.thumbnailUrl,
-                                    trackCount = meta.approxTrackCount.toInt(),
+                                    trackCount = meta.approxTrackCount.toInt().coerceAtLeast(0),
                                 ),
                             )
                         } else {
@@ -104,6 +104,8 @@ class PlaylistRepo(
                         trackDao.replacePlaylistContent(id, tracks, received)
                         received += tracks.size
                         seenIds += tracks.map { it.videoId }
+                        // live counter: partial fetch on 2G must be visible and persistent
+                        playlistDao.updateStats(id, received, null)
                         statusBus.set(
                             StatusBus.Key.Extraction,
                             StatusBus.Entry(

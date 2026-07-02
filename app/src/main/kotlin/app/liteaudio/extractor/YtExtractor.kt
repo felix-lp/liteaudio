@@ -187,6 +187,15 @@ class YtExtractor(metadataClient: OkHttpClient) {
             var nextPage = info.nextPage
             while (true) {
                 val tracks = items.mapNotNull { toTrackMeta(it) }
+                android.util.Log.i(
+                    TAG,
+                    "playlist page: ${items.size} items -> ${tracks.size} tracks, next=${nextPage != null}",
+                )
+                // items came in but none parsed: that's extractor breakage,
+                // not an empty playlist — fail loudly instead of a silent zero
+                if (items.isNotEmpty() && tracks.isEmpty()) {
+                    throw ExtractorError.ParseBroken()
+                }
                 total += tracks.size
                 if (tracks.isNotEmpty()) emit(PlaylistPage.Items(tracks, total))
                 if (nextPage == null) break
@@ -203,8 +212,10 @@ class YtExtractor(metadataClient: OkHttpClient) {
     }.flowOn(Dispatchers.IO)
 
     private fun toTrackMeta(item: StreamInfoItem): TrackMeta? {
-        val videoId = runCatching { youtube.streamLHFactory.getId(item.url) }.getOrNull()
-            ?: return null
+        val videoId = extractVideoId(item.url) ?: run {
+            android.util.Log.w(TAG, "cannot extract videoId from url=${item.url}")
+            return null
+        }
         return TrackMeta(
             videoId = videoId,
             title = item.name.orEmpty(),
@@ -212,6 +223,24 @@ class YtExtractor(metadataClient: OkHttpClient) {
             durationSec = item.duration.toInt().coerceAtLeast(0),
             thumbnailUrl = pickThumbnail(item.thumbnails),
         )
+    }
+
+    /** LinkHandlerFactory first, manual URL parsing as a fallback. */
+    private fun extractVideoId(url: String?): String? {
+        if (url.isNullOrBlank()) return null
+        runCatching { youtube.streamLHFactory.getId(url) }.getOrNull()?.let { return it }
+        val uri = runCatching { Uri.parse(url) }.getOrNull() ?: return null
+        uri.getQueryParameter("v")?.takeIf { it.length == 11 }?.let { return it }
+        val segments = uri.pathSegments ?: return null
+        for (i in segments.indices) {
+            if (segments[i] in listOf("shorts", "live", "embed") && i + 1 < segments.size) {
+                return segments[i + 1].takeIf { it.length == 11 }
+            }
+        }
+        if ((uri.host ?: "").endsWith("youtu.be")) {
+            return segments.firstOrNull()?.takeIf { it.length == 11 }
+        }
+        return null
     }
 
     private fun pickThumbnail(images: List<Image>?): String? {
@@ -225,6 +254,8 @@ class YtExtractor(metadataClient: OkHttpClient) {
     }
 
     companion object {
+        private const val TAG = "YtExtractor"
+
         fun watchUrl(videoId: String) = "https://www.youtube.com/watch?v=$videoId"
 
         /** googlevideo URLs carry their expiry as an `expire` unix-seconds param. */
