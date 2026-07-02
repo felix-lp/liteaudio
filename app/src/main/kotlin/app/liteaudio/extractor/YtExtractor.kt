@@ -185,6 +185,12 @@ class YtExtractor(metadataClient: OkHttpClient) {
             var total = 0
             var items = info.relatedItems.filterIsInstance<StreamInfoItem>()
             var nextPage = info.nextPage
+            // header parsed, playlist claims tracks, but zero items and no
+            // continuation: the item parser is broken — do not end silently
+            if (items.isEmpty() && nextPage == null && info.streamCount > 0) {
+                android.util.Log.e(TAG, "playlist has ${info.streamCount} tracks but 0 items parsed")
+                throw ExtractorError.ParseBroken()
+            }
             while (true) {
                 val tracks = items.mapNotNull { toTrackMeta(it) }
                 android.util.Log.i(

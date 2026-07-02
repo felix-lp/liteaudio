@@ -1,0 +1,23 @@
+name: Probe extractor versions
+
+on:
+  workflow_dispatch:
+  push:
+    paths: [".github/workflows/probe.yml"]
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: NewPipeExtractor versions on JitPack
+        run: |
+          echo "=== jitpack maven-metadata ==="
+          curl -sS "https://jitpack.io/com/github/TeamNewPipe/NewPipeExtractor/maven-metadata.xml" | tail -40 || true
+          echo "=== jitpack api versions ==="
+          curl -sS "https://jitpack.io/api/versions/com.github.TeamNewPipe/NewPipeExtractor" || true
+          echo ""
+          echo "=== github latest release ==="
+          curl -sS "https://api.github.com/repos/TeamNewPipe/NewPipeExtractor/releases/latest" | grep -E '"(tag_name|published_at)"' || true
+          echo "=== github recent tags ==="
+          curl -sS "https://api.github.com/repos/TeamNewPipe/NewPipeExtractor/tags?per_page=10" | grep '"name"' || true
