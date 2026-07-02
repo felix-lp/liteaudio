@@ -10,6 +10,11 @@ jobs:
     timeout-minutes: 45
     permissions:
       contents: write
+    env:
+      KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
 
@@ -21,13 +26,13 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Decode release keystore
-        if: ${{ secrets.KEYSTORE_B64 != '' }}
+        if: env.KEYSTORE_B64 != ''
         run: |
-          echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > /tmp/release.keystore
+          echo "$KEYSTORE_B64" | base64 -d > /tmp/release.keystore
           echo "RELEASE_KEYSTORE_PATH=/tmp/release.keystore" >> "$GITHUB_ENV"
-          echo "RELEASE_KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> "$GITHUB_ENV"
-          echo "RELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> "$GITHUB_ENV"
-          echo "RELEASE_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> "$GITHUB_ENV"
+          echo "RELEASE_KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> "$GITHUB_ENV"
+          echo "RELEASE_KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
+          echo "RELEASE_KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
 
       - name: Build release APK
         run: ./gradlew assembleRelease --stacktrace

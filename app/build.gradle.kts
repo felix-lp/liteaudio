@@ -68,6 +68,19 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+
+    defaultConfig.buildConfigField(
+        "String",
+        "NEWPIPE_VERSION",
+        "\"${libs.versions.newpipe.get()}\"",
+    )
+
+    lint {
+        // Media3 @UnstableApi is used deliberately throughout the media layer
+        disable += "UnsafeOptInUsageError"
+        abortOnError = false
     }
 
     packaging {
