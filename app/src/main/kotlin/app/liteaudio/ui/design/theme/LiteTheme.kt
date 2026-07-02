@@ -1,9 +1,14 @@
 package app.liteaudio.ui.design.theme
 
+import androidx.compose.foundation.IndicationNodeFactory
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.node.DelegatableNode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -119,6 +124,18 @@ object Lite {
         @Composable get() = LocalLiteDimens.current
 }
 
+/**
+ * No ripple anywhere: pressed feedback is drawn skeuomorphically by each
+ * component (inset gradients), so the default indication is a no-op.
+ */
+private object NoIndication : IndicationNodeFactory {
+    private class NoopNode : Modifier.Node()
+
+    override fun create(interactionSource: InteractionSource): DelegatableNode = NoopNode()
+    override fun equals(other: Any?): Boolean = other === this
+    override fun hashCode(): Int = "NoIndication".hashCode()
+}
+
 @Composable
 fun LiteTheme(
     accent: Color,
@@ -128,6 +145,7 @@ fun LiteTheme(
         LocalLiteColors provides LiteColors(accent = accent),
         LocalLiteTypography provides LiteTypography(),
         LocalLiteDimens provides LiteDimens(),
+        LocalIndication provides NoIndication,
         content = content,
     )
 }

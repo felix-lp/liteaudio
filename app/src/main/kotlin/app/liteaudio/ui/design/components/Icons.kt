@@ -231,4 +231,10 @@ object LiteIcons {
             moveTo(9f, 6f); lineTo(15f, 12f); lineTo(9f, 18f)
         }
     }
+
+    val ChevronLeft: ImageVector by lazy {
+        strokeIcon("chevron_left", 2.2f) {
+            moveTo(15f, 6f); lineTo(9f, 12f); lineTo(15f, 18f)
+        }
+    }
 }

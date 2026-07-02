@@ -31,6 +31,7 @@
     <string name="action_cancel">Отмена</string>
     <string name="action_ok">ОК</string>
     <string name="action_retry">Повторить</string>
+    <string name="action_pause">Пауза</string>
     <string name="action_delete">Удалить</string>
     <string name="action_rename">Переименовать</string>
 

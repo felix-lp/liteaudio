@@ -29,6 +29,7 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_ok">OK</string>
     <string name="action_retry">Retry</string>
+    <string name="action_pause">Pause</string>
     <string name="action_delete">Delete</string>
     <string name="action_rename">Rename</string>
 
