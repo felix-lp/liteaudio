@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">LiteAudio</string>
+
+    <!-- Tabs -->
+    <string name="tab_library">Библиотека</string>
+    <string name="tab_downloads">Загрузки</string>
+    <string name="tab_settings">Настройки</string>
+
+    <!-- Library -->
+    <string name="library_section_youtube">YouTube</string>
+    <string name="library_section_local">Мои плейлисты</string>
+    <string name="library_empty_hint">Пока пусто. Добавь плейлист или трек с YouTube по ссылке.</string>
+    <string name="library_add_by_url">Добавить по ссылке</string>
+    <string name="library_create_playlist">Создать плейлист</string>
+    <string name="library_tracks_count">%1$d треков</string>
+    <string name="playlist_action_download_all">Скачать всё</string>
+    <string name="playlist_action_refresh">Обновить</string>
+    <string name="playlist_action_rename">Переименовать</string>
+    <string name="playlist_action_delete">Удалить</string>
+    <string name="playlist_delete_confirm_title">Удалить плейлист?</string>
+    <string name="playlist_delete_keep_files">Оставить скачанные файлы</string>
+    <string name="playlist_delete_with_files">Удалить вместе с файлами</string>
+    <string name="add_url_hint">Ссылка на плейлист или видео YouTube</string>
+    <string name="add_url_title">Добавить по ссылке</string>
+    <string name="add_url_invalid">Это не похоже на ссылку YouTube</string>
+    <string name="add_video_pick_playlist">В какой плейлист добавить трек?</string>
+    <string name="new_playlist_name_hint">Название плейлиста</string>
+    <string name="action_add">Добавить</string>
+    <string name="action_create">Создать</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_ok">ОК</string>
+    <string name="action_retry">Повторить</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_rename">Переименовать</string>
+
+    <!-- Playlist screen -->
+    <string name="playlist_play">Играть</string>
+    <string name="playlist_shuffle">Перемешать</string>
+    <string name="playlist_stats">%1$d треков · %2$d в кеше · %3$d скачано</string>
+    <string name="track_action_play_next">Играть следующим</string>
+    <string name="track_action_enqueue">Добавить в очередь</string>
+    <string name="track_action_download">Скачать</string>
+    <string name="track_action_add_to_playlist">Добавить в плейлист</string>
+    <string name="track_action_remove_from_playlist">Убрать из плейлиста</string>
+    <string name="track_action_remove_from_cache">Удалить из кеша</string>
+    <string name="track_action_remove_download">Удалить загрузку</string>
+
+    <!-- Player -->
+    <string name="player_queue">Очередь</string>
+    <string name="player_source_cache">кеш</string>
+    <string name="player_source_network">сеть</string>
+    <string name="queue_now_playing">Сейчас играет</string>
+    <string name="queue_next_manual">Дальше в очереди</string>
+    <string name="queue_next_from">Дальше из: %1$s</string>
+    <string name="queue_empty">Очередь пуста</string>
+
+    <!-- Downloads -->
+    <string name="downloads_progress_summary">%1$d из %2$d · %3$s из %4$s</string>
+    <string name="downloads_pause_all">Пауза всё</string>
+    <string name="downloads_resume_all">Продолжить всё</string>
+    <string name="downloads_empty">Очередь загрузок пуста</string>
+    <string name="downloads_section_queue">Очередь</string>
+    <string name="downloads_section_done">Скачано</string>
+    <string name="download_state_queued">в очереди</string>
+    <string name="download_state_running">скачивается</string>
+    <string name="download_state_paused">пауза</string>
+    <string name="download_state_error">ошибка</string>
+    <string name="download_state_waiting_channel">ожидание: канал занят воспроизведением</string>
+
+    <!-- Status strip -->
+    <string name="status_idle">готов</string>
+    <string name="status_offline">нет сети</string>
+    <string name="status_retry_in">повтор через %1$d с</string>
+    <string name="status_retry_now">сейчас</string>
+    <string name="status_buffering">Буферизация %1$d%%</string>
+    <string name="status_extracting_playlist">Получаю плейлист… %1$d треков</string>
+    <string name="status_extracting_video">Получаю данные трека…</string>
+    <string name="status_downloading">Скачивается %1$d/%2$d · %3$s</string>
+    <string name="status_prefetching">Предзагрузка: %1$s</string>
+    <string name="status_completing_current">Докачиваю текущий трек</string>
+    <string name="status_waiting_network">Жду сеть</string>
+    <string name="status_url_refresh">Ссылка устарела — обновляю</string>
+    <string name="status_added_to_queue">Добавлено в очередь</string>
+    <string name="status_added_to_playlist">Добавлено в плейлист</string>
+    <string name="status_playlist_added">Плейлист добавлен: %1$s</string>
+    <string name="status_beyond_buffer">Переход за буфер — жду данные</string>
+
+    <!-- Extractor errors -->
+    <string name="err_geo_blocked">Видео недоступно в этом регионе</string>
+    <string name="err_age_restricted">Возрастное ограничение — видео недоступно без входа</string>
+    <string name="err_private">Видео приватное</string>
+    <string name="err_deleted">Видео удалено или недоступно</string>
+    <string name="err_rate_limited">YouTube ограничил запросы — жду и повторю</string>
+    <string name="err_parse_broken">YouTube изменился — нужно обновить приложение</string>
+    <string name="err_network">Ошибка сети — повторю</string>
+    <string name="err_playlist_not_found">Плейлист не найден</string>
+
+    <!-- Settings -->
+    <string name="settings_group_network">Сеть и качество</string>
+    <string name="settings_stream_format">Формат для стриминга</string>
+    <string name="settings_download_format">Формат для загрузок</string>
+    <string name="settings_format_size_estimate">≈ %1$s за 4 минуты</string>
+    <string name="settings_on_network_death">При обрыве сети</string>
+    <string name="settings_death_wait">Ждать бесконечно</string>
+    <string name="settings_death_skip">Перейти на закешированный трек</string>
+    <string name="settings_prefetch_count">Предзагрузка следующих треков</string>
+    <string name="settings_prefetch_off">выкл</string>
+    <string name="settings_group_storage">Хранилище</string>
+    <string name="settings_cache_limit">Лимит кеша</string>
+    <string name="settings_storage_usage">Занято: кеш %1$s · загрузки %2$s</string>
+    <string name="settings_clear_cache">Очистить кеш</string>
+    <string name="settings_clear_cache_confirm">Удалить все закешированные данные? Скачанные треки останутся.</string>
+    <string name="settings_group_appearance">Внешний вид</string>
+    <string name="settings_accent">Акцентный цвет</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_language_system">Как в системе</string>
+    <string name="settings_group_about">О приложении</string>
+    <string name="settings_version">Версия</string>
+    <string name="settings_extractor_version">Версия экстрактора</string>
+
+    <!-- Player notification -->
+    <string name="notification_channel_playback">Воспроизведение</string>
+    <string name="notification_channel_transfer">Загрузки</string>
+    <string name="transfer_notification_title">LiteAudio — загрузка</string>
+</resources>
