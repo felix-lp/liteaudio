@@ -53,7 +53,8 @@ fun AppRoot(graph: AppGraph) {
 
     val slots by graph.statusBus.slots.collectAsStateWithLifecycle()
     val network by graph.networkMonitor.state.collectAsStateWithLifecycle()
-    val downloads by graph.downloadRepo.observeQueue().collectAsState(initial = emptyList())
+    val downloadsFlow = androidx.compose.runtime.remember { graph.downloadRepo.observeQueue() }
+    val downloads by downloadsFlow.collectAsState(initial = emptyList())
 
     val activeDownloads = downloads.count {
         it.state == DownloadState.QUEUED || it.state == DownloadState.RUNNING

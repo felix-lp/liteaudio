@@ -43,11 +43,12 @@ import kotlinx.coroutines.launch
 /** Mihon-style download queue: one active task, visible order, honest states. */
 @Composable
 fun DownloadsScreen(graph: AppGraph) {
-    val queue by graph.downloadRepo.observeQueue().collectAsState(initial = emptyList())
-    val done by graph.downloadRepo.observeDone().collectAsState(initial = emptyList())
-    val playerBusy by graph.playerController.state
-        .map { it.isBuffering }
-        .collectAsState(initial = false)
+    val queueFlow = remember { graph.downloadRepo.observeQueue() }
+    val queue by queueFlow.collectAsState(initial = emptyList())
+    val doneFlow = remember { graph.downloadRepo.observeDone() }
+    val done by doneFlow.collectAsState(initial = emptyList())
+    val playerBusyFlow = remember { graph.playerController.state.map { it.isBuffering } }
+    val playerBusy by playerBusyFlow.collectAsState(initial = false)
     val scope = rememberCoroutineScope()
     var menuTarget by remember { mutableStateOf<DownloadEntity?>(null) }
 
@@ -190,7 +191,8 @@ private fun DownloadRow(
     onMenu: () -> Unit,
 ) {
     val colors = Lite.colors
-    val track by graph.db.trackDao().observe(entry.videoId).collectAsState(initial = null)
+    val trackFlow = remember(entry.videoId) { graph.db.trackDao().observe(entry.videoId) }
+    val track by trackFlow.collectAsState(initial = null)
 
     Column(
         Modifier

@@ -50,9 +50,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun PlaylistScreen(graph: AppGraph, navController: NavHostController, playlistId: Long) {
-    val playlist by graph.playlistRepo.observePlaylist(playlistId).collectAsState(initial = null)
-    val rows by graph.playlistRepo.observeTracks(playlistId).collectAsState(initial = emptyList())
-    val downloads by graph.downloadRepo.observeAll().collectAsState(initial = emptyList())
+    val playlistFlow = remember(playlistId) { graph.playlistRepo.observePlaylist(playlistId) }
+    val playlist by playlistFlow.collectAsState(initial = null)
+    val rowsFlow = remember(playlistId) { graph.playlistRepo.observeTracks(playlistId) }
+    val rows by rowsFlow.collectAsState(initial = emptyList())
+    val downloadsFlow = remember { graph.downloadRepo.observeAll() }
+    val downloads by downloadsFlow.collectAsState(initial = emptyList())
     val playerState by graph.playerController.state.collectAsState()
     val scope = rememberCoroutineScope()
 
@@ -154,7 +157,8 @@ fun PlaylistScreen(graph: AppGraph, navController: NavHostController, playlistId
         LazyColumn(Modifier.fillMaxSize()) {
             itemsIndexed(rows, key = { _, r -> r.track.videoId }) { index, row ->
                 val track = row.track
-                val status by graph.cacheStatus.observe(track.videoId).collectAsState(initial = null)
+                val statusFlow = remember(track.videoId) { graph.cacheStatus.observe(track.videoId) }
+                val status by statusFlow.collectAsState(initial = null)
                 TrackRow(
                     title = track.title,
                     subtitle = "${track.uploader} · ${formatDuration(track.durationSec)}",

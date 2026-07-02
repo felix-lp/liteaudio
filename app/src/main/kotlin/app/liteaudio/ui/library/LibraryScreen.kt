@@ -51,7 +51,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LibraryScreen(graph: AppGraph, navController: NavHostController) {
-    val playlists by graph.playlistRepo.observePlaylists().collectAsState(initial = emptyList())
+    val playlistsFlow = remember { graph.playlistRepo.observePlaylists() }
+    val playlists by playlistsFlow.collectAsState(initial = emptyList())
     val scope = rememberCoroutineScope()
 
     var showAddMenu by remember { mutableStateOf(false) }
@@ -350,7 +351,8 @@ fun PickLocalPlaylistDialog(
     onDismiss: () -> Unit,
     onPicked: (Long) -> Unit,
 ) {
-    val playlists by graph.playlistRepo.observePlaylists().collectAsState(initial = emptyList())
+    val playlistsFlow = remember { graph.playlistRepo.observePlaylists() }
+    val playlists by playlistsFlow.collectAsState(initial = emptyList())
     val local = playlists.filter { it.type == PlaylistType.LOCAL }
     val scope = rememberCoroutineScope()
     var newName by remember { mutableStateOf("") }

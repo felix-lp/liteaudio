@@ -43,10 +43,11 @@ fun PlayerScreen(graph: AppGraph, navController: NavHostController) {
     val state by graph.playerController.state.collectAsState()
     val colors = Lite.colors
     val current = state.queue.getOrNull(state.currentIndex)
-    val cacheStatus by (
+    val cacheStatusFlow = androidx.compose.runtime.remember(current?.videoId) {
         current?.let { graph.cacheStatus.observe(it.videoId) }
             ?: kotlinx.coroutines.flow.flowOf(null)
-        ).collectAsState(initial = null)
+    }
+    val cacheStatus by cacheStatusFlow.collectAsState(initial = null)
 
     Column(
         Modifier

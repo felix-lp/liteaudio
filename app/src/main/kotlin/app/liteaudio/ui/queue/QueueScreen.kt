@@ -32,7 +32,8 @@ import app.liteaudio.ui.design.theme.Lite
 @Composable
 fun QueueScreen(graph: AppGraph, navController: NavHostController) {
     val state by graph.playerController.state.collectAsState()
-    val playlists by graph.playlistRepo.observePlaylists().collectAsState(initial = emptyList())
+    val playlistsFlow = androidx.compose.runtime.remember { graph.playlistRepo.observePlaylists() }
+    val playlists by playlistsFlow.collectAsState(initial = emptyList())
 
     Column(Modifier.fillMaxSize()) {
         Row(
@@ -80,7 +81,10 @@ fun QueueScreen(graph: AppGraph, navController: NavHostController) {
                     Header(stringResource(R.string.queue_next_from, name))
                 }
 
-                val status by graph.cacheStatus.observe(item.videoId).collectAsState(initial = null)
+                val statusFlow = androidx.compose.runtime.remember(item.videoId) {
+                    graph.cacheStatus.observe(item.videoId)
+                }
+                val status by statusFlow.collectAsState(initial = null)
                 TrackRow(
                     title = item.title,
                     subtitle = item.uploader,
